@@ -28,7 +28,6 @@ if (isset($_POST['envoyer'])) {
   $login = $_POST['login'] ?? '';
   $mdp = $_POST['mdp'] ?? '';
   if ($login && $mdp) {
-    // On suppose que le champ "email" est utilisé comme identifiant
     $stmt = $pdo->prepare('SELECT * FROM users WHERE email = :email');
     $stmt->execute(['email' => $login]);
     $user = $stmt->fetch();
