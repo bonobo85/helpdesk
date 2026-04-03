@@ -1,0 +1,78 @@
+
+/* Body*/
+body {
+  min-height: 100vh;
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,0,255,1) 60%, rgba(0,212,255,1) 100%);
+  font-family: 'Exo 2', sans-serif;
+}
+
+/* Navbar */
+.container {
+  background: #833AB4;
+  background: linear-gradient(90deg,rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 0%, rgba(252, 176, 69, 1) 100%);
+  border: 0.5px solid rgba(0, 0, 0, 0.1);
+  border-radius: 12px;
+  padding: 1.25rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  font-family: 'DM Sans', sans-serif;
+  
+}
+
+.container h1 {
+  font-size: 17px;
+  font-weight: 600;
+  color: #1a1a1a;
+  letter-spacing: -0.3px;
+  margin: 0 0 2px 0;
+}
+
+.container > p {
+  font-size: 12px;
+  color: #000000;
+  margin: 0;
+}
+
+.container ul {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.container ul li a {
+  display: inline-block;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 500;
+  color: #000000;
+  text-decoration: none;
+  border-radius: 8px;
+  border: 0.5px solid transparent;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+}
+
+.container ul li a:hover {
+  background: #833AB4;
+  background: linear-gradient(90deg,rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 0%, rgba(252, 176, 69, 1) 100%);
+  border-color: rgba(0, 0, 0, 0.08);
+  color: #111;
+}
+
+/* Style spécial pour le lien Logout */
+.container ul li:last-child a {
+  color: #ff0000;
+  border-color: rgba(0, 0, 0, 0.08);
+}
+
+.container ul li:last-child a:hover {
+  background: #833AB4;
+  background: linear-gradient(90deg,rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 0%, rgba(252, 176, 69, 1) 100%);
+  border-color: #f09595;
+  color: #791f1f;
+}
