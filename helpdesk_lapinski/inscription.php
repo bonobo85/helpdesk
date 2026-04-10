@@ -25,7 +25,7 @@ $serveur = "localhost";
       
           if(!empty($_POST['mdp']) && !empty($_POST['conf_mdp'])){
         if($_POST['mdp'] == $_POST['conf_mdp']){
-          $sql = "insert into users (nom,email,mdp,perm,created) values (?,?,?,user,now())";
+          $sql = "insert into users (nom,email,mdp,created) values (?,?,?,now())";
           $stmt = mysqli_prepare($link, $sql);
           mysqli_stmt_bind_param($stmt,"sss",$_POST['nom'],$_POST['mail'],$_POST['mdp']);
           if(mysqli_stmt_execute($stmt)){
@@ -37,10 +37,7 @@ $serveur = "localhost";
           $message = "<span class='message'>* Les mots de passe ne correspondent pas !!</span>";
         }
       }
-      else{
-        $message = "<span class='message'>* Vous devez remplir tous les champs !!</span>";
-      }
-      }
+}
     
     
 

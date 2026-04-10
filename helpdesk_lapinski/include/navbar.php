@@ -1,3 +1,29 @@
+<?php
+session_start();
+
+require_once 'config/config.php';
+
+$stmt = mysqli_query($link, "SELECT * FROM users ");
+
+$stmt = mysqli_query($link, "SELECT * FROM tickets ");
+$ticket = $stmt->fetch_all(MYSQLI_ASSOC);
+
+$stmt = mysqli_query($link, "SELECT perm FROM users where id = ".$_SESSION['id_users']);
+$perm = mysqli_fetch_assoc($stmt);
+
+$display ="";
+if($perm['perm'] == "admin"){
+    $display = "block";
+}
+else if($perm['perm'] == "technicien"){
+    $display = "block";
+}
+else{
+    $display = "none";
+}
+
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -5,6 +31,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>navbar</title>
 </head>
+
 <style>
 /* Navbar */
 .container {
@@ -47,7 +74,7 @@
 .container ul li a {
   display: inline-block;
   padding: 7px 14px;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 500;
   color: #000000;
   text-decoration: none;
@@ -63,8 +90,7 @@
   border-color: rgba(0, 0, 0, 0.08);
   color: #111;
 }
-
-/* Style spécial pour le lien Logout */
+s
 .container ul li:last-child a {
   color: #ff0000;
   border-color: rgba(0, 0, 0, 0.08);
@@ -77,6 +103,20 @@
   color: #791f1f;
 }
 
+.container ul li.perm {
+  display: inline-block;
+  padding: 7px 14px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #0400ff;
+  text-decoration: none;
+  border-radius: 8px;
+  border: 0.5px solid transparent;
+  transition: all 0.15s ease;
+  white-space: nowrap;
+  cursor: crosshair;
+}
+
 </style>
 <body>
     <!-- Navbar -->
@@ -84,8 +124,9 @@
         <h1>Helpdesk - Lapinski</h1>
         <ul>
             <li><a href="index.php">Dashboard</a></li>
-            <li><a href="ticket.php">Tickets</a></li>
+            <li><a href="ticket.php" style="display: <?= $display ?>">Tickets</a></li>
             <li><a href="logout.php">Logout</a></li>
+            <li class="perm">Permission : <?= $perm['perm'] ?> </li>
         </ul>
     </div>
 </body>
