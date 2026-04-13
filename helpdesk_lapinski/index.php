@@ -1,5 +1,6 @@
 <?php
 
+require_once 'include/auth.php';
 require_once 'include/navbar.php';
 require_once 'config/config.php';
 
@@ -31,7 +32,7 @@ $ticket = $stmt->fetch_all(MYSQLI_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Helpdesk - Lapinski</title>
-    <link rel="stylesheet" href="css/creation.css">
+    <link rel="stylesheet" href="css/index.css">
 </head>
 <body>
 

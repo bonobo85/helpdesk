@@ -1,4 +1,5 @@
 <?php
+require_once 'include/auth.php';
 require_once 'include/navbar.php';
 require_once 'config/config.php';
 
@@ -85,7 +86,7 @@ if (isset($_GET['id'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Helpdesk - Lapinski</title>
     <link rel="stylesheet" href="css/creation.css">
-    <style>
+<style>
         .split-layout {
             display: flex;
             border: 1px solid #ddd;
@@ -279,7 +280,6 @@ if (isset($_GET['id'])) {
                         <select name="statut">
                             <option value="ouvert"   <?= $ticket_ouvert['statut'] == 'ouvert'   ? 'selected' : '' ?>>Ouvert</option>
                             <option value="en cours" <?= $ticket_ouvert['statut'] == 'en cours' ? 'selected' : '' ?>>En cours</option>
-                            <option value="resolu"   <?= $ticket_ouvert['statut'] == 'resolu'   ? 'selected' : '' ?>>Résolu</option>
                             <option value="ferme"    <?= $ticket_ouvert['statut'] == 'ferme'    ? 'selected' : '' ?>>Fermé</option>
                         </select>
                         <button type="submit" name="changer_statut" class="btn-statut">Mettre à jour</button>

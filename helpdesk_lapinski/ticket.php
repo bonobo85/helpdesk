@@ -1,7 +1,9 @@
 <?php
 
+require_once 'include/auth.php';
 require_once 'include/navbar.php';
 require_once 'config/config.php';
+
 
 $stmt = mysqli_query($link, "SELECT id, titre, description, statut, user_id, created FROM tickets");
 $ticket = $stmt->fetch_all(MYSQLI_ASSOC);

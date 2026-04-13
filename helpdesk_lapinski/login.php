@@ -21,7 +21,7 @@ $message = "";
 $error = false;
       if(isset($_POST['envoyer'])){
       $login = $_POST['nom'];
-      $mdp = $_POST['mdp'];
+      $mdp = password_hash($_POST['mdp'], PASSWORD_DEFAULT);
       $sql = "select * from users where nom = ? and mdp = ?";
           $stmt = mysqli_prepare($link,$sql);
           mysqli_stmt_bind_param($stmt,"ss",$login,$mdp);
