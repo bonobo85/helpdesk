@@ -1,0 +1,130 @@
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: sans-serif;
+            display: flex;          /* ← RÈGLE 1 : côte à côte */
+            height: 100vh;
+        }
+
+        /* ====== SIDEBAR ====== */
+        .sidebar {
+            width: 260px;
+            flex-shrink: 0;         /* ← RÈGLE 2 : largeur fixe */
+            background: #f9fafb;
+            border-right: 1px solid #e5e7eb;
+            display: flex;
+            flex-direction: column;
+            overflow-y: auto;
+        }
+        .modif-ticket {
+            display: flex;
+            gap: 20px;
+            align-items: flex-start;
+            width: 100%;
+        }
+        .sidebar h2 {
+            padding: 16px;
+            font-size: 14px;
+            font-weight: 600;
+            border-bottom: 1px solid #e5e7eb;
+            color: #111;
+        }
+        .ticket-item {
+            display: block;
+            padding: 12px 16px;
+            border-bottom: 1px solid #f0f0f0;
+            text-decoration: none;
+            color: inherit;
+        }
+        .ticket-item:hover   { background: #f3f4f6; }
+        .ticket-item.active  { background: #ede9fe; border-left: 3px solid #6d28d9; }
+        .ticket-item .titre  { font-size: 13px; font-weight: 500; color: #111; }
+        .ticket-item .statut {
+            display: inline-block;
+            font-size: 11px;
+            padding: 2px 8px;
+            border-radius: 99px;
+            margin-top: 5px;
+        }
+
+        /* ====== ZONE DROITE ====== */
+        .main {
+            flex: 1;                /* ← RÈGLE 3 : prend tout l'espace restant */
+            display: flex;
+            flex-direction: column; /* header + messages + formulaire empilés */
+            min-width: 0;           /* évite le débordement */
+        }
+
+        /* En-tête du ticket */
+        .main-header {
+            padding: 14px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            background: #fff;
+        }
+        .main-header h1 { font-size: 16px; color: #111; }
+        .main-header p  { font-size: 12px; color: #6b7280; margin-top: 4px; }
+
+        /* Historique des messages — zone scrollable */
+        .historique {
+            flex: 1;                /* ← prend l'espace entre le header et le formulaire */
+            overflow-y: auto;       /* ← scroll uniquement ici */
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            background: #fff;
+        }
+
+        /* Bulle de message */
+        .msg {
+            display: flex;
+            gap: 10px;
+            align-items: flex-start;
+        }
+        .avatar {
+            width: 32px; height: 32px;
+            border-radius: 50%;
+            background: #ede9fe;
+            color: #5b21b6;
+            font-size: 12px;
+            font-weight: 600;
+            display: flex; align-items: center; justify-content: center;
+            flex-shrink: 0;
+        }
+        .bulle {
+            background: #f3f4f6;
+            border-radius: 0 12px 12px 12px;
+            padding: 10px 14px;
+            font-size: 14px;
+            color: #111;
+            max-width: 75%;
+            line-height: 1.5;
+        }
+
+        /* Formulaire — reste collé en bas */
+        .formulaire {
+            padding: 12px 20px;
+            border-top: 1px solid #e5e7eb;
+            background: #f9fafb;
+            display: flex;
+            gap: 10px;
+        }
+        .formulaire input[type="text"] {
+            flex: 1;
+            padding: 10px 14px;
+            border: 1px solid #d1d5db;
+            border-radius: 8px;
+            font-size: 14px;
+        }
+        .formulaire button {
+            padding: 10px 20px;
+            background: #6d28d9;
+            color: #fff;
+            border: none;
+            border-radius: 8px;
+            font-size: 14px;
+            cursor: pointer;
+        }
+        .formulaire button:hover { background: #5b21b6; }
+
+        .vide { color: #9ca3af; font-size: 14px; padding: 20px; }
