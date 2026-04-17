@@ -2,19 +2,8 @@
 
 session_start();
 
-$serveur = "localhost";
-    $dbname = "helpdesk_lapinski";
-    $login = "root";
-    $mdp = "";
+require_once 'config/config.php';
 
-    $link = mysqli_connect($serveur, $login, $mdp, $dbname);
-
-    if(!$link){
-        die("la connexion a échoué: ".mysqli_connect_error());
-    }
-
-    $resultat = mysqli_query($link, "SELECT * FROM users");
-        //var_dump($resultat);
 
 
 $message = "";
@@ -23,7 +12,7 @@ $error = false;
           $login = $_POST['nom'];
           $mdp = $_POST['mdp'];
         
-          $sql = "SELECT * FROM users WHERE nom = ? and mdp = ?";
+          $sql = "SELECT * FROM users WHERE nom = ? and mot_de_passe = ?";
           $stmt = mysqli_prepare($link, $sql);
           mysqli_stmt_bind_param($stmt, "ss", $login, $mdp);
           mysqli_stmt_execute($stmt);

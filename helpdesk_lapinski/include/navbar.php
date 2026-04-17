@@ -8,14 +8,14 @@ $stmt = mysqli_query($link, "SELECT * FROM users ");
 $stmt = mysqli_query($link, "SELECT * FROM tickets ");
 $ticket = $stmt->fetch_all(MYSQLI_ASSOC);
 
-$stmt = mysqli_query($link, "SELECT perm FROM users where id = ".$_SESSION['id_users']);
-$perm = mysqli_fetch_assoc($stmt);
+$stmt = mysqli_query($link, "SELECT role FROM users where id = ".$_SESSION['id_users']);
+$role = mysqli_fetch_assoc($stmt);
 
 $display ="";
-if($perm['perm'] == "admin"){
+if($role['role'] == "admin"){
     $display = "block";
 }
-else if($perm['perm'] == "technicien"){
+else if($role['role'] == "technicien"){
     $display = "block";
 }
 else{
@@ -103,7 +103,7 @@ s
   color: #791f1f;
 }
 
-.container ul li.perm {
+.container ul li.role {
   display: inline-block;
   padding: 7px 14px;
   font-size: 15px;
@@ -127,7 +127,7 @@ s
             <li><a href="ticket.php" style="display: <?= $display ?>">Tickets</a></li>
             <li><a href="test.php" style="display: <?= $display ?>">Test</a></li>
             <li><a href="logout.php">Logout</a></li>
-            <li class="perm">Permission : <?= $perm['perm'] ?> </li>
+            <li class="role">Permission : <?= $role['role'] ?> </li>
         </ul>
     </div>
 </body>

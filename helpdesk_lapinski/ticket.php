@@ -5,7 +5,7 @@ require_once 'include/navbar.php';
 require_once 'config/config.php';
 
 
-$stmt = mysqli_query($link, "SELECT id, titre, description, statut, user_id, created FROM tickets");
+$stmt = mysqli_query($link, "SELECT id, titre, description, statut, user_id, cree_le FROM tickets");
 $ticket = $stmt->fetch_all(MYSQLI_ASSOC);
 
 ?>
@@ -39,7 +39,7 @@ $ticket = $stmt->fetch_all(MYSQLI_ASSOC);
         <td><?= htmlspecialchars($ticket['description']) ?></td>
         <td><?= htmlspecialchars($ticket['statut']) ?></td>
         <td><?= htmlspecialchars($ticket['user_id']) ?></td>
-        <td><?= htmlspecialchars($ticket['created']) ?></td>
+        <td><?= htmlspecialchars($ticket['cree_le']) ?></td>
       </tr>
       <?php endforeach; ?>
     </tbody>

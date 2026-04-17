@@ -8,7 +8,7 @@ if(isset($_POST['envoyer'])){
       
           if(!empty($_POST['titre']) && !empty($_POST['description'])){
         
-          $sql = "insert into tickets (titre,description,created,statut,user_id) values (?,?,NOW(),'ouvert',?)";  
+          $sql = "insert into tickets (titre,description,cree_le,statut,user_id) values (?,?,NOW(),'ouvert',?)";  
           $stmt = mysqli_prepare($link, $sql);
            mysqli_stmt_bind_param($stmt,"sss",$_POST['titre'],$_POST['description'],$_SESSION['id_users']);
            mysqli_stmt_execute($stmt);
@@ -18,7 +18,7 @@ if(isset($_POST['envoyer'])){
         $message = "<span class='message'>* Vous devez remplir tous les champs !!</span>";
       }
 }
-$stmt = mysqli_query($link, "SELECT id, titre, description, statut, user_id, created FROM tickets where user_id = ".$_SESSION['id_users']);
+$stmt = mysqli_query($link, "SELECT id, titre, description, statut, user_id, cree_le FROM tickets where user_id = ".$_SESSION['id_users']);
 $ticket = $stmt->fetch_all(MYSQLI_ASSOC);
 
 
@@ -71,7 +71,7 @@ $ticket = $stmt->fetch_all(MYSQLI_ASSOC);
         <td><?= htmlspecialchars($ticket['titre']) ?></td>
         <td><?= htmlspecialchars($ticket['description']) ?></td>
         <td><?= htmlspecialchars($ticket['statut']) ?></td>
-        <td><?= htmlspecialchars($ticket['created']) ?></td>
+        <td><?= htmlspecialchars($ticket['cree_le']) ?></td>
       </tr>
       <?php endforeach; ?>
     </tbody>

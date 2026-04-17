@@ -4,20 +4,7 @@ session_start();
 
 
    
-$serveur = "localhost";
-    $dbname = "helpdesk_lapinski";
-    $login = "root";
-    $mdp = "";
-
-    $link = mysqli_connect($serveur, $login, $mdp, $dbname);
-
-    if(!$link){
-        die("la connexion a échoué: ".mysqli_connect_error());
-    }
-
-    $resultat = mysqli_query($link, "SELECT * FROM users");
-        //var_dump($resultat);
-
+require_once 'config/config.php';
 
     $message="";
 
@@ -28,7 +15,7 @@ $serveur = "localhost";
       
           if(!empty($_POST['mdp']) && !empty($_POST['conf_mdp'])){
         if($_POST['mdp'] == $_POST['conf_mdp']){
-          $sql = "insert into users (nom,email,mdp,created) values (?,?,?,now())";
+          $sql = "insert into users (nom,email,mot_de_passe,cree_le) values (?,?,?,now())";
           $stmt = mysqli_prepare($link, $sql);
           mysqli_stmt_bind_param($stmt,"sss",$_POST['nom'],$_POST['mail'],$hash);
           if(mysqli_stmt_execute($stmt)){
