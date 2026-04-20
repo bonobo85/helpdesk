@@ -62,6 +62,8 @@ $ticket = $stmt->fetch_all(MYSQLI_ASSOC);
         <th scope="col">Description</th>
         <th scope="col">Statut</th>
         <th scope="col">Date de création</th>
+        <th> Voir le ticket</th>
+
       </tr>
     </thead>
     <tbody>
@@ -72,6 +74,8 @@ $ticket = $stmt->fetch_all(MYSQLI_ASSOC);
         <td><?= htmlspecialchars($ticket['description']) ?></td>
         <td><?= htmlspecialchars($ticket['statut']) ?></td>
         <td><?= htmlspecialchars($ticket['cree_le']) ?></td>
+        <td><a class="view-ticket" href="historique.php?id=<?= htmlspecialchars($ticket['id']) ?>" role="button"><input class="voir-ticket" type="submit" value="voir"></a></td>
+
       </tr>
       <?php endforeach; ?>
     </tbody>
