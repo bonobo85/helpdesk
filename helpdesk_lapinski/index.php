@@ -34,6 +34,7 @@ $ticket = $stmt->fetch_all(MYSQLI_ASSOC);
     <title>Helpdesk - Lapinski</title>
     <link rel="stylesheet" href="css/index.css">
     <link rel="stylesheet" href="https://www.w3schools.com/w3css/5/w3.css">
+    
 </head>
 <body>
 

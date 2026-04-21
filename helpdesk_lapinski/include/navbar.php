@@ -126,8 +126,11 @@ s
             <li><a href="index.php">Dashboard</a></li>
             <li><a href="ticket.php" style="display: <?= $display ?>">Tickets</a></li>
             <li><a href="historique.php">Historique</a></li>
+            <li><a href="panel.php" style="display: <?= $display ?>">Panel</a></li>
             <li><a href="logout.php">Logout</a></li>
             <li class="role">Permission : <?= $role['role'] ?> </li>
+
+
         </ul>
     </div>
 </body>

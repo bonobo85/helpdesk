@@ -3,6 +3,10 @@ require_once 'include/auth.php';
 require_once 'include/navbar.php';
 require_once 'config/config.php';
 
+// Récupération du rôle
+$stmt = mysqli_query($link, "SELECT role FROM users WHERE id = " . $_SESSION['id_users']);
+$role = mysqli_fetch_assoc($stmt)['role'];
+
 // Envoyer message
 if (isset($_POST['send_message']) && !empty($_POST['message'])) {
     $stmt = mysqli_prepare($link, "INSERT INTO messages (ticket_id, user_id, message, cree_le) VALUES (?, ?, ?, NOW())");
@@ -13,11 +17,16 @@ if (isset($_POST['send_message']) && !empty($_POST['message'])) {
     exit;
 }
 
-// Liste tickets
-$tickets = mysqli_query(
-    $link,
-    "SELECT * FROM tickets  ORDER BY cree_le DESC"
-)->fetch_all(MYSQLI_ASSOC);
+// Modif statut ticket (admin seulement)
+if (isset($_POST['update_statut'])) {
+    if ($role === 'admin') {
+        $stmt = mysqli_prepare($link, "UPDATE tickets SET statut = ? WHERE id = ?");
+        mysqli_stmt_bind_param($stmt, "si", $_POST['statut'], $_POST['ticket_id_statut']);
+        mysqli_stmt_execute($stmt);
+    }
+    header("Location: ?id=" . (int)$_POST['ticket_id_statut']);
+    exit;
+}
 
 $selected_id = isset($_GET['id']) ? (int)$_GET['id'] : null;
 
@@ -25,29 +34,23 @@ $selected_id = isset($_GET['id']) ? (int)$_GET['id'] : null;
 $ticket_actif = null;
 $messages = [];
 
-// ticket selectionné par l'user
 if ($selected_id) {
-    $stmt = mysqli_prepare($link, "SELECT * FROM tickets WHERE id = ?");
-    mysqli_stmt_bind_param($stmt, "i", $selected_id);
+    if ($role === 'admin') {
+        $stmt = mysqli_prepare($link, "SELECT * FROM tickets WHERE id = ?");
+        mysqli_stmt_bind_param($stmt, "i", $selected_id);
+    } else {
+        $stmt = mysqli_prepare($link, "SELECT * FROM tickets WHERE id = ? AND user_id = ?");
+        mysqli_stmt_bind_param($stmt, "ii", $selected_id, $_SESSION['id_users']);
+    }
     mysqli_stmt_execute($stmt);
     $ticket_actif = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt));
 
-    $stmt = mysqli_prepare($link, "SELECT * FROM messages WHERE ticket_id = ? ORDER BY id ASC");
-    mysqli_stmt_bind_param($stmt, "i", $selected_id);
-    mysqli_stmt_execute($stmt);
-    $messages = mysqli_stmt_get_result($stmt)->fetch_all(MYSQLI_ASSOC);
-}
-
-// modif statut ticket 
-if (isset($_POST['update_statut'])) {
-    // var_dump($_POST['update_statut']);
-    // if (isset($_POST['statut'])) {
-        $stmt = mysqli_prepare($link, "UPDATE tickets SET statut = ? WHERE ticket_id = ?");
-        mysqli_stmt_bind_param($stmt, "si", $_POST['statut'], $_POST['ticket_id_statut']);
+    if ($ticket_actif) {
+        $stmt = mysqli_prepare($link, "SELECT * FROM messages WHERE ticket_id = ? ORDER BY id ASC");
+        mysqli_stmt_bind_param($stmt, "i", $selected_id);
         mysqli_stmt_execute($stmt);
-    // }
-    header("Location: ?id=" . (int)$_POST['ticket_id_statut']);
-    exit;
+        $messages = mysqli_stmt_get_result($stmt)->fetch_all(MYSQLI_ASSOC);
+    }
 }
 
 // Pagination
@@ -55,80 +58,87 @@ $par_page = 10;
 $page_actuelle = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
 $offset = ($page_actuelle - 1) * $par_page;
 
-// Nombre total de tickets
-$total = mysqli_fetch_assoc(mysqli_query($link, "SELECT COUNT(*) as total FROM tickets"))['total'];
+// Nombre total de tickets selon le rôle
+if ($role === 'admin') {
+    $total = mysqli_fetch_assoc(mysqli_query($link, "SELECT COUNT(*) as total FROM tickets"))['total'];
+} else {
+    $stmt_count = mysqli_prepare($link, "SELECT COUNT(*) as total FROM tickets WHERE user_id = ?");
+    mysqli_stmt_bind_param($stmt_count, "i", $_SESSION['id_users']);
+    mysqli_stmt_execute($stmt_count);
+    $total = mysqli_fetch_assoc(mysqli_stmt_get_result($stmt_count))['total'];
+}
 $total_pages = ceil($total / $par_page);
 
-// Liste tickets avec limite
-$stmt = mysqli_prepare($link, "SELECT * FROM tickets ORDER BY cree_le DESC LIMIT ? OFFSET ?");
-mysqli_stmt_bind_param($stmt, "ii", $par_page, $offset);
+// Liste tickets selon le rôle
+if ($role === 'admin') {
+    $stmt = mysqli_prepare($link, "SELECT * FROM tickets ORDER BY cree_le DESC LIMIT ? OFFSET ?");
+    mysqli_stmt_bind_param($stmt, "ii", $par_page, $offset);
+} else {
+    $stmt = mysqli_prepare($link, "SELECT * FROM tickets WHERE user_id = ? ORDER BY cree_le DESC LIMIT ? OFFSET ?");
+    mysqli_stmt_bind_param($stmt, "iii", $_SESSION['id_users'], $par_page, $offset);
+}
 mysqli_stmt_execute($stmt);
 $tickets = mysqli_stmt_get_result($stmt)->fetch_all(MYSQLI_ASSOC);
-
-
 ?>
 
 <!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
-<title>Helpdesk</title>
-<link rel="stylesheet" href="css/historique.css">
+    <meta charset="UTF-8">
+    <title>Helpdesk</title>
+    <link rel="stylesheet" href="css/historique.css">
 </head>
 <body>
 
-<!-- MAIN CHAT -->
 <div class="modif-ticket">
 
-<!-- SIDEBAR -->
-<div class="sidebar">
-    <div class="sidebar-header">TICKETS</div>
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+        <div class="sidebar-header">TICKETS</div>
 
-    <div class="sidebar-list">
-        <?php foreach ($tickets as $t): ?>
-            <a href="?id=<?= $t['id'] ?>&page=<?= $page_actuelle ?>"
-               class="sidebar-item <?= $selected_id == $t['id'] ? 'active' : '' ?>">
-                <div class="sidebar-item-title">
-                    <?= htmlspecialchars($t['titre']) ?>
-                </div>
-                <div class="sidebar-item-status-nom">
-                    <?= htmlspecialchars($t['statut']) ?>
-                </div>
-            </a>
-        <?php endforeach; ?>
-    </div>
-
-    <!-- PAGINATION -->
-    <?php if ($total_pages > 1): ?>
-    <nav class="sidebar-pagination" aria-label="Pagination tickets">
-        <ul class="pagination">
-
-            <!-- Précédent -->
-            <li class="page-item <?= $page_actuelle <= 1 ? 'disabled' : '' ?>">
-                <a class="page-link" href="?page=<?= $page_actuelle - 1 ?><?= $selected_id ? '&id='.$selected_id : '' ?>" aria-label="Previous">
-                    <span aria-hidden="true">&laquo;</span>
+        <div class="sidebar-list">
+            <?php foreach ($tickets as $t): ?>
+                <a href="?id=<?= $t['id'] ?>&page=<?= $page_actuelle ?>"
+                   class="sidebar-item <?= $selected_id == $t['id'] ? 'active' : '' ?>">
+                    <div class="sidebar-item-title">
+                        <?= htmlspecialchars($t['titre']) ?>
+                    </div>
+                    <div class="sidebar-item-status-nom">
+                        <?= htmlspecialchars($t['statut']) ?>
+                        | Crée le <?= htmlspecialchars($t['cree_le']) ?>
+                    </div>
                 </a>
-            </li>
+            <?php endforeach; ?>
+        </div>
 
-            <!-- Numéros de pages -->
-            <?php for ($i = 1; $i <= $total_pages; $i++): ?>
-                <li class="page-item <?= $i == $page_actuelle ? 'active' : '' ?>">
-                    <a class="page-link" href="?page=<?= $i ?><?= $selected_id ? '&id='.$selected_id : '' ?>">
-                        <?= $i ?>
+        <!-- PAGINATION -->
+        <?php if ($total_pages > 1): ?>
+        <nav class="sidebar-pagination" aria-label="Pagination tickets">
+            <ul class="pagination">
+
+                <li class="page-item <?= $page_actuelle <= 1 ? 'disabled' : '' ?>">
+                    <a class="page-link" href="?page=<?= $page_actuelle - 1 ?><?= $selected_id ? '&id='.$selected_id : '' ?>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
                     </a>
                 </li>
-            <?php endfor; ?>
 
-            <!-- Suivant -->
-            <li class="page-item <?= $page_actuelle >= $total_pages ? 'disabled' : '' ?>">
-                <a class="page-link" href="?page=<?= $page_actuelle + 1 ?><?= $selected_id ? '&id='.$selected_id : '' ?>" aria-label="Next">
-                    <span aria-hidden="true">&raquo;</span>
-                </a>
-            </li>
+                <?php for ($i = 1; $i <= $total_pages; $i++): ?>
+                    <li class="page-item <?= $i == $page_actuelle ? 'active' : '' ?>">
+                        <a class="page-link" href="?page=<?= $i ?><?= $selected_id ? '&id='.$selected_id : '' ?>">
+                            <?= $i ?>
+                        </a>
+                    </li>
+                <?php endfor; ?>
 
-        </ul>
-    </nav>
-    <?php endif; ?>
+                <li class="page-item <?= $page_actuelle >= $total_pages ? 'disabled' : '' ?>">
+                    <a class="page-link" href="?page=<?= $page_actuelle + 1 ?><?= $selected_id ? '&id='.$selected_id : '' ?>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+
+            </ul>
+        </nav>
+        <?php endif; ?>
     </div>
 
     <!-- CHAT -->
@@ -137,49 +147,53 @@ $tickets = mysqli_stmt_get_result($stmt)->fetch_all(MYSQLI_ASSOC);
         <?php if ($selected_id && $ticket_actif): ?>
 
             <div class="main-header">
-                    <div class="main-header-left">
-                       <h2><?= htmlspecialchars($ticket_actif['titre']) ?></h2>
-                       <p><?= htmlspecialchars($ticket_actif['description']) ?></p>
-             </div>
-
-                 <form method="POST" class="statut-form">
-                <input type="hidden" name="ticket_id_statut" value="<?= $selected_id ?>">
-                  <select name="statut" class="form-select" onchange="this.form.submit()">
-                        <option value="ouvert"   <?= $ticket_actif['statut'] === 'ouvert'   ? 'selected' : '' ?>>🟢 Ouvert</option>
-                        <option value="en_cours" <?= $ticket_actif['statut'] === 'en_cours' ? 'selected' : '' ?>>🟡 En cours</option>
-                       <option value="ferme"    <?= $ticket_actif['statut'] === 'ferme'    ? 'selected' : '' ?>>🔴 Fermé</option>
-                 </select>
-                 <button type="submit" name="update_statut" hidden></button>
-                 </form>
+                <div class="main-header-left">
+                    <h2><?= htmlspecialchars($ticket_actif['titre']) ?></h2>
+                    <p><?= htmlspecialchars($ticket_actif['description']) ?></p>
                 </div>
-            
+
+                <?php if ($role === 'admin'): ?>
+                    <form method="POST" class="statut-form">
+                        <input type="hidden" name="ticket_id_statut" value="<?= $selected_id ?>">
+                        <input type="hidden" name="update_statut" value="1">
+                        <select name="statut" class="form-select" onchange="this.form.submit()">
+                            <option value="ouvert"   <?= $ticket_actif['statut'] == 'ouvert'   ? 'selected' : '' ?>>🟢 Ouvert</option>
+                            <option value="en_cours" <?= $ticket_actif['statut'] === 'en_cours' ? 'selected' : '' ?>>🟡 En cours</option>
+                            <option value="ferme"    <?= $ticket_actif['statut'] == 'ferme'    ? 'selected' : '' ?>>🔴 Fermé</option>
+                        </select>
+                    </form>
+                <?php else: ?>
+                    <span class="statut-badge statut-<?= $ticket_actif['statut'] ?>">
+                        <?php
+                            $labels = [
+                                'ouvert'   => '🟢 Ouvert',
+                                'en_cours' => '🟡 En cours',
+                                'ferme'    => '🔴 Fermé',
+                            ];
+                            echo $labels[$ticket_actif['statut']] ?? htmlspecialchars($ticket_actif['statut']);
+                        ?>
+                    </span>
+                <?php endif; ?>
+            </div>
+
             <!-- MESSAGES -->
             <div class="historique">
-
                 <?php foreach ($messages as $msg): ?>
                     <div class="msg">
-
                         <div class="avatar">
-                            <?= strtoupper(substr($msg['user_id'], 0, 1)) ?>
+                            <?= htmlspecialchars($msg['user_id']) ?>
                         </div>
-
                         <div class="contenu">
-
                             <div class="meta">
                                 <span class="user">User <?= htmlspecialchars($msg['user_id']) ?></span>
-                                <span class="heure">
-                                    <?= date('H:i', strtotime($msg['cree_le'])) ?>
-                                </span>
+                                <span class="date"><?= date('Y-m-d H:i', strtotime($msg['cree_le'])) ?></span>
                             </div>
-
                             <div class="bulle">
                                 <?= htmlspecialchars($msg['message']) ?>
                             </div>
-
                         </div>
                     </div>
                 <?php endforeach; ?>
-
             </div>
 
             <!-- INPUT -->
@@ -202,3 +216,4 @@ if (histo) histo.scrollTop = histo.scrollHeight;
 </script>
 
 </body>
+</html>

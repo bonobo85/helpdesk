@@ -5,22 +5,18 @@ require_once 'include/navbar.php';
 require_once 'config/config.php';
 
 // Pagination
-$par_page = 10;
-$page_actuelle = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
-$offset = ($page_actuelle - 1) * $par_page;
+
 
 // Total
 $total = mysqli_fetch_assoc(mysqli_query($link, "SELECT COUNT(*) as total FROM tickets"))['total'];
-$total_pages = ceil($total / $par_page);
+
 
 // Tickets de la page
-$stmt = mysqli_prepare($link, "SELECT id, titre, description, statut, user_id, cree_le FROM tickets ORDER BY cree_le DESC LIMIT ? OFFSET ?");
-mysqli_stmt_bind_param($stmt, "ii", $par_page, $offset);
+$stmt = mysqli_prepare($link, "SELECT id, titre, description, statut, user_id, cree_le FROM tickets ORDER BY cree_le");
 mysqli_stmt_execute($stmt);
 $tickets = mysqli_stmt_get_result($stmt)->fetch_all(MYSQLI_ASSOC);
 
-$selected_id = "";
-if(isset($select_id))
+$selected_id = isset($_GET['id']) ? (int)$_GET['id'] : null;
 
 ?>
 <!DOCTYPE html>
@@ -55,15 +51,16 @@ if(isset($select_id))
         <td><?= htmlspecialchars($ticket['statut']) ?></td>
         <td><?= htmlspecialchars($ticket['user_id']) ?></td>
         <td><?= htmlspecialchars($ticket['cree_le']) ?></td>
-        <td><a class="btn btn-primary" href="historique.php?id=<?= htmlspecialchars($ticket['id']) ?>" role="button"><input class="btn btn-primary" type="submit" value="voir"></a></td>
+        <td><a class="btn-voir" href="historique.php?id=<?= htmlspecialchars($ticket['id']) ?>"><input type="submit" value="Voir"></a></td>
       </tr>
       <?php endforeach; ?>
     </tbody>
-  </table>
+    
+</table>
 
-  
 
-</div>
 
+
+ 
 </body>
 </html>

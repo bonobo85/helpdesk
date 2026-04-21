@@ -1,0 +1,69 @@
+body {
+  min-height: 100vh;
+  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,0,255,1) 60%, rgba(0,212,255,1) 100%);
+  font-family: 'Exo 2', 'DM Sans', sans-serif;
+  color: #fff;
+}
+
+/* =========================
+   TABLE USERS (ADMIN)
+========================= */
+
+.tickets-container {
+  width: min(100%, 1200px);
+  margin: 2rem auto;
+  border-radius: 1rem;
+  overflow: hidden;
+  background: linear-gradient(90deg, rgba(253,29,29,1) 0%, rgba(252,176,69,1) 100%);
+  box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+}
+
+.tickets-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.tickets-table th,
+.tickets-table td {
+  padding: 1rem;
+  color: white;
+  text-align: left;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.tickets-table thead th {
+  background: rgba(0,0,0,0.2);
+  font-size: 0.85rem;
+  text-transform: uppercase;
+}
+
+/* Hover ligne */
+.tickets-table tbody tr:hover {
+  background: rgba(0,0,0,0.15);
+}
+
+/* Boutons actions */
+.btn-action {
+  padding: 0.5rem 0.75rem;
+  border-radius: 0.4rem;
+  border: 1px solid rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.15);
+  cursor: pointer;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.btn-action:hover {
+  background: rgba(255,255,255,0.25);
+}
+
+/* Couleurs spécifiques */
+.btn-action.edit {
+  border-color: rgba(0, 200, 255, 0.6);
+  color: rgba(0, 200, 255, 0.6);
+}
+
+.btn-action.delete {
+  border-color: rgba(255, 80, 80, 0.7);
+  color:rgba(255, 80, 80, 0.7);
+}
