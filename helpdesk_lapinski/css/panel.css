@@ -1,21 +1,17 @@
 body {
   min-height: 100vh;
-  background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,0,255,1) 60%, rgba(0,212,255,1) 100%);
+  background: linear-gradient(90deg, #020024 0%, #0000ff 60%, #00d4ff 100%);
   font-family: 'Exo 2', 'DM Sans', sans-serif;
   color: #fff;
 }
-
-/* =========================
-   TABLE USERS (ADMIN)
-========================= */
 
 .tickets-container {
   width: min(100%, 1200px);
   margin: 2rem auto;
   border-radius: 1rem;
   overflow: hidden;
-  background: linear-gradient(90deg, rgba(253,29,29,1) 0%, rgba(252,176,69,1) 100%);
-  box-shadow: 0 16px 40px rgba(0,0,0,0.25);
+  background: linear-gradient(90deg, #fd1d1d 0%, #fcb045 100%);
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.25);
 }
 
 .tickets-table {
@@ -26,44 +22,75 @@ body {
 .tickets-table th,
 .tickets-table td {
   padding: 1rem;
-  color: white;
+  color: #fff;
   text-align: left;
-  border-bottom: 1px solid rgba(255,255,255,0.15);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
 }
 
 .tickets-table thead th {
-  background: rgba(0,0,0,0.2);
+  background: rgba(0, 0, 0, 0.2);
   font-size: 0.85rem;
   text-transform: uppercase;
+  letter-spacing: 0.06em;
 }
 
-/* Hover ligne */
 .tickets-table tbody tr:hover {
-  background: rgba(0,0,0,0.15);
+  background: rgba(0, 0, 0, 0.15);
 }
 
-/* Boutons actions */
+.cell-input,
+.cell-select {
+  display: none;
+  width: 100%;
+  background: rgba(0, 0, 0, 0.2);
+  border: 1px solid rgba(255, 255, 255, 0.3);
+  border-radius: 0.4rem;
+  color: #fff;
+  font-family: inherit;
+  font-size: 0.85rem;
+  padding: 0.3rem 0.5rem;
+  outline: none;
+}
+
+.cell-input:focus,
+.cell-select:focus {
+  border-color: rgba(0, 200, 255, 0.7);
+}
+
+.cell-select option {
+  background: #1a0a40;
+}
+
+tr.editing .cell-text {
+  display: none;
+}
+
+tr.editing .cell-input,
+tr.editing .cell-select {
+  display: block;
+}
+
 .btn-action {
   padding: 0.5rem 0.75rem;
   border-radius: 0.4rem;
-  border: 1px solid rgba(255,255,255,0.4);
-  background: rgba(255,255,255,0.15);
+  border: 1px solid rgba(255, 255, 255, 0.4);
+  background: rgba(255, 255, 255, 0.15);
   cursor: pointer;
   font-size: 0.8rem;
   font-weight: 600;
+  color: #fff;
 }
 
 .btn-action:hover {
-  background: rgba(255,255,255,0.25);
+  background: rgba(255, 255, 255, 0.25);
 }
 
-/* Couleurs spécifiques */
 .btn-action.edit {
   border-color: rgba(0, 200, 255, 0.6);
-  color: rgba(0, 200, 255, 0.6);
+  color: rgba(0, 200, 255, 0.9);
 }
 
 .btn-action.delete {
   border-color: rgba(255, 80, 80, 0.7);
-  color:rgba(255, 80, 80, 0.7);
+  color: rgba(255, 80, 80, 0.9);
 }
