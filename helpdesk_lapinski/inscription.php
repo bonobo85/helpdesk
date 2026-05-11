@@ -3,7 +3,7 @@
 session_start();
 
 
-   
+require_once 'include/navbar.php';
 require_once 'config/config.php';
 
     $message="";
@@ -70,9 +70,7 @@ require_once 'config/config.php';
       </form>
       <div class="login-link" style="margin-top:20px;">
         
-        <ul>
-            <li>Déjà un compte ? <a href="login.php">Connectez-vous ici</a></li>
-        </ul>
+       
       </div>
 
 

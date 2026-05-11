@@ -69,9 +69,7 @@ $error = false;
       </form>
             <div class="login-link" style="margin-top:20px;">
         
-        <ul>
-            <li>Pas encore de compte ? <a href="inscription.php">Inscrivez-vous ici</a></li>
-        </ul>
+      
       </div>
 
       <p class="footer-note" style="margin-top:20px;">Labo Informatique · <span>6ème</span></p>

@@ -10,8 +10,7 @@ body {
   width: min(100%, 1200px);
   margin: 2rem auto;
   border-radius: 1rem;
-  overflow-x: auto;
-  overflow-y: hidden;
+  overflow: hidden;
   box-shadow: 0 16px 40px rgba(0,0,0,0.25);
   background: linear-gradient(90deg, rgba(253,29,29,1) 0%, rgba(252,176,69,1) 100%);
 }
@@ -51,31 +50,6 @@ body {
   border-bottom: none;
 }
 
-/* Style pour le bouton voir */
-.btn-primary {
-  background: rgba(255, 255, 255, 0.2);
-  border: none;
-  padding: 0.4rem 1rem;
-  border-radius: 0.4rem;
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-.btn-primary input.btn-primary {
-  background: transparent;
-  border: none;
-  color: white;
-  cursor: pointer;
-  font-weight: 600;
-  padding: 0;
-}
-
-.btn-primary:hover {
-  background: rgba(255, 255, 255, 0.4);
-  transform: scale(1.05);
-}
-
-
 .btn-voir {
   display: inline-block;
   padding: 0.35rem 0.85rem;
@@ -91,18 +65,74 @@ body {
   transition: background 0.2s ease;
 }
 
-.btn-voir:hover {
-  background: rgba(255,255,255,0.35);
-  color: #fff;
+.btn-voir input[type="submit"] {
+  background: transparent;
+  border: none;
+  color: white;
+  cursor: pointer;
+  font-weight: 600;
+  font-family: inherit;
+  font-size: inherit;
+  padding: 0;
 }
 
+.btn-voir:hover {
+  background: rgba(255,255,255,0.35);
+}
+
+/* ── PAGINATION ── */
+
+.sidebar-pagination {
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  background: rgba(0,0,0,0.25);
+  border-top: 1px solid rgba(255,255,255,0.15);
+}
 
 .pagination {
   display: flex;
   flex-wrap: wrap;
+  align-items: center;
   justify-content: center;
-  gap: 4px;
+  gap: 6px;
   list-style: none;
   margin: 0;
   padding: 0;
+}
+
+.page-link {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 34px;
+  height: 34px;
+  padding: 0 10px;
+  border-radius: 8px;
+  border: 2px solid rgba(255,255,255,0.6);
+  background: rgba(0,0,0,0.3);
+  color: #fff;
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  font-family: inherit;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.page-link:hover {
+  background: rgba(0,0,0,0.5);
+  border-color: #fff;
+  color: #fff;
+}
+
+.page-item.active .page-link {
+  background: #fff;
+  border-color: #fff;
+  color: #fd1d1d;
+  font-weight: 800;
+}
+
+.page-item.disabled .page-link {
+  pointer-events: none;
+  opacity: 0.3;
 }
