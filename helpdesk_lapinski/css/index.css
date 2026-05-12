@@ -28,7 +28,7 @@ body {
 }
 
 .field label {
-  color: #fff;
+  color: #ffffff;
   font-weight: 700;
   font-size: 0.85rem;
   text-transform: uppercase;
@@ -39,7 +39,7 @@ body {
   border-radius: 0.5rem;
   border: 1px solid rgba(255,255,255,0.3);
   background: rgba(0,0,0,0.15);
-  color: white;
+  color: #ffffff;
   outline: none;
 }
 
@@ -52,7 +52,7 @@ body {
   border-radius: 0.5rem;
   border: 2px solid rgba(255,255,255,0.4);
   background: rgba(255,255,255,0.15);
-  color: white;
+  color: #ffffff;
   cursor: pointer;
   font-weight: 700;
 }
@@ -73,6 +73,10 @@ body {
   background: linear-gradient(90deg, rgba(253,29,29,1) 0%, rgba(252,176,69,1) 100%);
   box-shadow: 0 16px 40px rgba(0,0,0,0.25);
 }
+.tickets-container h2 {
+  color: #fff;
+  text-align: center;
+}
 
 .tickets-table {
   width: 100%;
@@ -82,7 +86,7 @@ body {
 .tickets-table th,
 .tickets-table td {
   padding: 1rem;
-  color: white;
+  color: #ffffff;
   text-align: left;
   border-bottom: 1px solid rgba(255,255,255,0.15);
 }

@@ -2,7 +2,7 @@ body {
 
   background: linear-gradient(90deg, rgba(2,0,36,1) 0%, rgba(0,0,255,1) 60%, rgba(0,212,255,1) 100%);
   font-family: 'Exo 2', sans-serif;
-  color: white;
+  color: rgb(255, 255, 255);
 }
 
 h1, p {
@@ -24,6 +24,7 @@ h1 {
   padding: 30px;
   max-width: 1200px;
   margin: 0 auto;
+  background: (90deg,rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 0%, rgba(252, 176, 69, 1) 100%);
 }
 
 .card {
@@ -31,8 +32,12 @@ h1 {
   margin: 0 !important;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
   transition: transform 0.2s ease;
+  background: (90deg,rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 0%, rgba(252, 176, 69, 1) 100%);
+
 }
 
 .card:hover {
   transform: translateY(-5px);
+  background: (90deg,rgba(131, 58, 180, 1) 0%, rgba(253, 29, 29, 1) 0%, rgba(252, 176, 69, 1) 100%);
+
 }

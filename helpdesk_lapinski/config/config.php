@@ -1,9 +1,9 @@
 <?php
 
-$serveur = "192.168.1.253";
-    $dbname = "helpdesk_irigaray";
-    $login = "6qib";
-    $mdp = "Irc2026";
+    $serveur = "localhost";
+    $dbname = "helpdesk_lapinski";
+    $login = "root";
+    $mdp = "";
 
     $link = mysqli_connect($serveur, $login, $mdp, $dbname);
 

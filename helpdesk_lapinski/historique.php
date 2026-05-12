@@ -7,6 +7,7 @@ require_once 'config/config.php';
 $stmt = mysqli_query($link, "SELECT role FROM users WHERE id = " . $_SESSION['id_users']);
 $role = mysqli_fetch_assoc($stmt)['role'];
 
+
 // Envoyer message
 if (isset($_POST['send_message']) && !empty($_POST['message'])) {
     $stmt = mysqli_prepare($link, "INSERT INTO messages (ticket_id, user_id, message, cree_le) VALUES (?, ?, ?, NOW())");

@@ -1,0 +1,164 @@
+-- phpMyAdmin SQL Dump
+-- version 5.2.1
+-- https://www.phpmyadmin.net/
+--
+-- Hôte : 127.0.0.1
+-- Généré le : mar. 12 mai 2026 à 14:44
+-- Version du serveur : 10.4.32-MariaDB
+-- Version de PHP : 8.2.12
+
+SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
+START TRANSACTION;
+SET time_zone = "+00:00";
+
+
+/*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
+/*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
+/*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
+/*!40101 SET NAMES utf8mb4 */;
+
+--
+-- Base de données : `helpdesk_lapinski`
+--
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `messages`
+--
+
+CREATE TABLE `messages` (
+  `id` int(11) NOT NULL,
+  `ticket_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `message` text NOT NULL,
+  `cree_le` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `messages`
+--
+
+INSERT INTO `messages` (`id`, `ticket_id`, `user_id`, `message`, `cree_le`) VALUES
+(1, 1, 1, 'Test', '2026-05-12 11:42:15');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `tickets`
+--
+
+CREATE TABLE `tickets` (
+  `id` int(11) NOT NULL,
+  `titre` varchar(255) NOT NULL,
+  `description` text NOT NULL,
+  `statut` enum('ouvert','en_cours','ferme') NOT NULL DEFAULT 'ouvert',
+  `user_id` int(11) NOT NULL,
+  `cree_le` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `tickets`
+--
+
+INSERT INTO `tickets` (`id`, `titre`, `description`, `statut`, `user_id`, `cree_le`) VALUES
+(1, 'test', 'test', 'ouvert', 3, '2026-05-12 11:41:14'),
+(2, 'test', 'test', 'ferme', 1, '2026-05-12 11:52:25'),
+(3, 'ticket ouvert', 'ouvert', 'ouvert', 1, '2026-05-12 11:57:07'),
+(4, 'ticket en cours ', 'en cours', 'ouvert', 1, '2026-05-12 11:57:15'),
+(5, 'ticket fermer ', 'fermer', 'ferme', 1, '2026-05-12 11:57:19');
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `users`
+--
+
+CREATE TABLE `users` (
+  `id` int(11) NOT NULL,
+  `nom` varchar(100) NOT NULL,
+  `email` varchar(150) NOT NULL,
+  `mot_de_passe` varchar(255) NOT NULL,
+  `role` enum('user','technicien','admin') NOT NULL DEFAULT 'user',
+  `cree_le` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Déchargement des données de la table `users`
+--
+
+INSERT INTO `users` (`id`, `nom`, `email`, `mot_de_passe`, `role`, `cree_le`) VALUES
+(1, 'admin', 'admin@admin.com', '$2y$10$OllStykNf/or/mV4R6OjzOBp9i9I/W7.XcMzq5f4jKLxZ2cNzxYSi', 'admin', '2026-05-12 11:41:08'),
+(2, 'tech', 'tech@tech.com', '$2y$10$XyY3WFCa1xVREFCAM66/iulxVm.so7.Pnu4i6C0nZtKCi1LBYiW8e', 'technicien', '2026-05-12 11:41:08'),
+(3, 'user', 'user@user.com', '$2y$10$vLpFGq5ZMc5ibex5u4BFSOquyQbf0Gp157pT6tW.PkRHiVG7cVqlu', 'user', '2026-05-12 11:41:08'),
+(4, 'test-perm-admin', 'test@admin.com', '$2y$10$qbmkskYOBfk58oUg1ZJJJue4AxHseVhe8XxMQH9qrvSN221V4X9Ia', 'admin', '2026-05-12 12:03:32');
+
+--
+-- Index pour les tables déchargées
+--
+
+--
+-- Index pour la table `messages`
+--
+ALTER TABLE `messages`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `ticket_id` (`ticket_id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Index pour la table `tickets`
+--
+ALTER TABLE `tickets`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `user_id` (`user_id`);
+
+--
+-- Index pour la table `users`
+--
+ALTER TABLE `users`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `email` (`email`);
+
+--
+-- AUTO_INCREMENT pour les tables déchargées
+--
+
+--
+-- AUTO_INCREMENT pour la table `messages`
+--
+ALTER TABLE `messages`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT pour la table `tickets`
+--
+ALTER TABLE `tickets`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT pour la table `users`
+--
+ALTER TABLE `users`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- Contraintes pour les tables déchargées
+--
+
+--
+-- Contraintes pour la table `messages`
+--
+ALTER TABLE `messages`
+  ADD CONSTRAINT `messages_ibfk_1` FOREIGN KEY (`ticket_id`) REFERENCES `tickets` (`id`) ON DELETE CASCADE,
+  ADD CONSTRAINT `messages_ibfk_2` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+
+--
+-- Contraintes pour la table `tickets`
+--
+ALTER TABLE `tickets`
+  ADD CONSTRAINT `tickets_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`id`) ON DELETE CASCADE;
+COMMIT;
+
+/*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
+/*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;
+/*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;

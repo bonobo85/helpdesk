@@ -4,33 +4,40 @@ session_start();
 
 require_once 'config/config.php';
 
-
-
 $message = "";
 $error = false;
-      if(isset($_POST['envoyer'])){
-          $login = $_POST['nom'];
-          $mdp = $_POST['mdp'];
-        
-          $sql = "SELECT * FROM users WHERE nom = ? and mot_de_passe = ?";
-          $stmt = mysqli_prepare($link, $sql);
-          mysqli_stmt_bind_param($stmt, "ss", $login, $mdp);
-          mysqli_stmt_execute($stmt);
-          $resultat2 = mysqli_stmt_get_result($stmt);
 
-          if(mysqli_num_rows($resultat2) > 0){
-              $ligne = mysqli_fetch_assoc($resultat2);
+if(isset($_POST['envoyer'])){
+    $login = $_POST['nom'];
+    $mdp   = $_POST['mdp'];
 
-              
-                  $_SESSION['id_users'] = $ligne['id'];
-                  $_SESSION['login'] = $ligne['nom'];
-                  header('Location: index.php');
-                  
-              
-          } else {
-              $error = true;
-          }
-      }
+    // On cherche uniquement par nom (pas le mdp en clair)
+    $sql  = "SELECT * FROM users WHERE nom = ?";
+    $stmt = mysqli_prepare($link, $sql);
+    mysqli_stmt_bind_param($stmt, "s", $login);
+    mysqli_stmt_execute($stmt);
+    $resultat2 = mysqli_stmt_get_result($stmt);
+
+    if(mysqli_num_rows($resultat2) > 0){
+        $ligne = mysqli_fetch_assoc($resultat2);
+
+        // var_dump du hash stocké en base
+        var_dump($ligne['mot_de_passe']);
+
+        // Vérification du mot de passe
+        if(password_verify($mdp, $ligne['mot_de_passe'])){
+            $_SESSION['id_users'] = $ligne['id'];
+            $_SESSION['login']    = $ligne['nom'];
+            header('Location: index.php');
+            exit();
+        } else {
+            $error = true;
+        }
+    } else {
+        $error = true;
+    }
+}
+var_dump($ligne['mot_de_passe']);
 ?>
 <!DOCTYPE html>
 <html lang="fr">
@@ -38,7 +45,7 @@ $error = false;
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Helpdesk - Lapinski</title>
-  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/connexion.css">
 </head>
 <body>
 
