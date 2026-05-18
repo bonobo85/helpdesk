@@ -88,10 +88,10 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `nom`, `email`, `mot_de_passe`, `role`, `cree_le`) VALUES
-(1, 'admin', 'admin@admin.com', '$2y$10$OllStykNf/or/mV4R6OjzOBp9i9I/W7.XcMzq5f4jKLxZ2cNzxYSi', 'admin', '2026-05-12 11:41:08'),
-(2, 'tech', 'tech@tech.com', '$2y$10$XyY3WFCa1xVREFCAM66/iulxVm.so7.Pnu4i6C0nZtKCi1LBYiW8e', 'technicien', '2026-05-12 11:41:08'),
-(3, 'user', 'user@user.com', '$2y$10$vLpFGq5ZMc5ibex5u4BFSOquyQbf0Gp157pT6tW.PkRHiVG7cVqlu', 'user', '2026-05-12 11:41:08'),
-(4, 'test-perm-admin', 'test@admin.com', '$2y$10$qbmkskYOBfk58oUg1ZJJJue4AxHseVhe8XxMQH9qrvSN221V4X9Ia', 'admin', '2026-05-12 12:03:32');
+(1, 'admin', 'admin@admin.com', '$2y$10$OllStykNf/or/mV4R6OjzOBp9i9I/W7.XcMzq5f4jKLxZ2cNzxYSi', 'admin', '2026-05-12 11:41:08'),--mdp : admin
+(2, 'tech', 'tech@tech.com', '$2y$10$XyY3WFCa1xVREFCAM66/iulxVm.so7.Pnu4i6C0nZtKCi1LBYiW8e', 'technicien', '2026-05-12 11:41:08'),-- mdp : tech
+(3, 'user', 'user@user.com', '$2y$10$vLpFGq5ZMc5ibex5u4BFSOquyQbf0Gp157pT6tW.PkRHiVG7cVqlu', 'user', '2026-05-12 11:41:08'), --mdp : user
+
 
 --
 -- Index pour les tables déchargées
