@@ -19,7 +19,10 @@ mysqli_stmt_bind_param($stmt, "ii", $par_page, $offset);
 mysqli_stmt_execute($stmt);
 $tickets = mysqli_stmt_get_result($stmt)->fetch_all(MYSQLI_ASSOC);
 
-$selected_id = isset($_GET['id']) ? (int)$_GET['id'] : null;
+$selected_id = "";
+if (isset($_GET['id'])) {
+    $selected_id = (int)$_GET['id'];
+}
 
 ?>
 <!DOCTYPE html>

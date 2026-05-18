@@ -41,7 +41,10 @@ $stmt  = mysqli_query($link, "SELECT * FROM users");
 $users = mysqli_fetch_all($stmt, MYSQLI_ASSOC);
 
 // ID en cours d'édition (si bouton Edit cliqué)
-$edit_id = isset($_POST['edit_id']) ? (int)$_POST['edit_id'] : null;
+$edit_id = null;
+if (isset($_POST['edit_id'])) {
+    $edit_id = (int)$_POST['edit_id'];
+}
 ?>
 
 <!DOCTYPE html>

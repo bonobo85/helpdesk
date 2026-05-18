@@ -39,10 +39,13 @@ $tickets = mysqli_query(
     "SELECT * FROM tickets WHERE user_id = " . (int)$_SESSION['id_users'] . " ORDER BY cree_le DESC"
 )->fetch_all(MYSQLI_ASSOC);
 
-$selected_id = isset($_GET['id']) ? (int)$_GET['id'] : null;
+$selected_id = "";
+if (isset($_GET['id'])) {
+    $selected_id = (int)$_GET['id'];
+}
 
 // Ticket actif
-$ticket_actif = null;
+$ticket_actif = "";
 $messages = [];
 
 if ($selected_id) {

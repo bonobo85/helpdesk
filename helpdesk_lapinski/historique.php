@@ -29,10 +29,13 @@ if (isset($_POST['update_statut'])) {
     exit;
 }
 
-$selected_id = isset($_GET['id']) ? (int)$_GET['id'] : null;
+$selected_id = "";
+if (isset($_GET['id'])) {
+    $selected_id = (int)$_GET['id'];
+}
 
 // Ticket actif
-$ticket_actif = null;
+$ticket_actif = "";
 $messages = [];
 
 if ($selected_id) {
@@ -211,10 +214,8 @@ $tickets = mysqli_stmt_get_result($stmt)->fetch_all(MYSQLI_ASSOC);
     </div>
 </div>
 
-<script>
-const histo = document.querySelector('.historique');
-if (histo) histo.scrollTop = histo.scrollHeight;
-</script>
+<script src="js/functions.js"></script>
+
 
 </body>
 </html>
